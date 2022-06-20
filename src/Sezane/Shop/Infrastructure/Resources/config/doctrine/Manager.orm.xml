@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="Sezane\Shop\Infrastructure\Persistence\Entity\Manager"
+            table="shop_manager"
+            repository-class="Sezane\Shop\Infrastructure\Persistence\Repository\ManagerRepository">
+
+        <!-- PRIMARY KEYS -->
+        <id name="id" type="integer" column="id">
+            <generator/>
+            <options>
+                <option name="unsigned">true</option>
+            </options>
+        </id>
+
+        <!-- FIELDS -->
+        <field name="firstName" type="string" >
+            <options>
+                <option name="comment">Manager firstname</option>
+            </options>
+        </field>
+
+        <field name="lastName" type="string">
+            <options>
+                <option name="comment">Manager lastname</option>
+            </options>
+        </field>
+
+        <!-- ASSOCIATIONS -->
+        <one-to-many field="shops" target-entity="Shop" mapped-by="shop"/>
+
+    </entity>
+
+</doctrine-mapping>

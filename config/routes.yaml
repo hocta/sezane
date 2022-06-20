@@ -1,0 +1,13 @@
+shop_add:
+  path: /api/shop/add
+  controller: Sezane\Shop\Infrastructure\Controller\Api\Shop\Add
+  methods: POST
+
+shop_search:
+  path: /api/shop/search/{page}
+  controller: Sezane\Shop\Infrastructure\Controller\Api\Shop\Search
+  methods: POST
+  defaults:
+    page: 1
+  requirements:
+    page: '\d+'

@@ -1,0 +1,7 @@
+framework:
+  messenger:
+    transports:
+      sync: 'in-memory://'
+      failed: 'in-memory://'
+      async: 'in-memory://'
+      async_eav: 'in-memory://'

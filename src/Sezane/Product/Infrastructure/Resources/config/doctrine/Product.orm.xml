@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="Sezane\Product\Infrastructure\Persistence\Entity\Product"
+            table="product"
+            repository-class="Sezane\Product\Infrastructure\Persistence\Repository\ProductRepository">
+
+        <!-- PRIMARY KEYS -->
+        <id name="id" type="integer" column="id">
+            <generator/>
+            <options>
+                <option name="unsigned">true</option>
+            </options>
+        </id>
+
+        <!-- FIELDS -->
+        <field name="name" type="string">
+            <options>
+                <option name="comment">Product name</option>
+            </options>
+        </field>
+
+        <field name="imageUrl" type="string">
+            <options>
+                <option name="comment">Product Image URL</option>
+            </options>
+        </field>
+
+        <!-- ASSOCIATIONS -->
+        <many-to-one field="productShop" target-entity="ProductShop">
+            <join-column name="product_shop_id" referenced-column-name="id" nullable="true" />
+        </many-to-one>
+
+    </entity>
+
+</doctrine-mapping>

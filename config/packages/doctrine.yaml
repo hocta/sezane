@@ -1,0 +1,62 @@
+doctrine:
+  dbal:
+    default_connection: sezane
+    connections:
+      sezane:
+        url: '%env(resolve:SEZANE_DATABASE_URL)%'
+        driver: 'pdo_mysql'
+        server_version: 'mariadb-10.5.8'
+        dbname: '%env(resolve:SEZANE_DATABASE_NAME)%'
+        user: '%env(resolve:SEZANE_DATABASE_USER)%'
+        password: '%env(resolve:SEZANE_DATABASE_PASSWORD)%'
+        charset: utf8mb4
+
+    # IMPORTANT: You MUST configure your server version,
+    # either here or in the DATABASE_URL env var (see .env file)
+    #server_version: '13'
+  orm:
+    auto_generate_proxy_classes: true
+    default_entity_manager: sezane
+
+    #
+    # ENTITY MANAGER
+    #
+    entity_managers:
+      # auto_mapping EM
+      auto_mapping: true
+
+      sezane:
+        connection: sezane
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+
+        dql:
+          numeric_functions:
+            asin: DoctrineExtensions\Query\Mysql\Asin
+            cos: DoctrineExtensions\Query\Mysql\Cos
+            radians: DoctrineExtensions\Query\Mysql\Radians
+            sin: DoctrineExtensions\Query\Mysql\Sin
+            power: DoctrineExtensions\Query\Mysql\Power
+            pi: DoctrineExtensions\Query\Mysql\Pi
+            round: DoctrineExtensions\Query\Mysql\Round
+
+        mappings:
+          Main:
+            is_bundle: false
+            type: annotation
+            dir: '%kernel.project_dir%/src/Entity/'
+            prefix: 'App\Entity'
+            alias: Sezane
+          # Mapping
+          Sezane_Shop:
+            is_bundle: false
+            type: xml
+            dir: '%kernel.project_dir%/src/Sezane/Shop/Infrastructure/Resources/config/doctrine'
+            prefix: 'Sezane\Shop\Infrastructure\Persistence\Entity'
+            alias: Sezane\Shop\Infrastructure\Persistence\Entity
+          Sezane_Product:
+            is_bundle: false
+            type: xml
+            dir: '%kernel.project_dir%/src/Sezane/Product/Infrastructure/Resources/config/doctrine'
+            prefix: 'Sezane\Product\Infrastructure\Persistence\Entity'
+            alias: Sezane\Product\Infrastructure\Persistence\Entity

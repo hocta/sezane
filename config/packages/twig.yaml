@@ -1,0 +1,17 @@
+twig:
+  default_path: '%kernel.project_dir%/templates'
+  # Use TWB_4 as framework stylesheet.
+  form_themes: [ 'bootstrap_4_layout.html.twig' ]
+
+  # ...
+  paths:
+    # @SezaneShop
+    '%kernel.project_dir%/src/Sezane/Shop/Infrastructure/templates': 'Shop'
+    # @SezaneProduct
+    '%kernel.project_dir%/src/Sezane/Product/Infrastructure/templates': 'Product'
+
+when@test:
+  twig:
+    strict_variables: true
+
+

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping
+        https://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+
+    <class name="Sezane\Shop\Domain\Model\Shop">
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">shop.add.name.not_blank</option>
+                <option name="groups">
+                    <value>shop_add</value>
+                    <value>shop_update</value>
+                </option>
+            </constraint>
+            <constraint name="Sezane\Shop\Domain\Validator\ShopNameAlreadyExist">
+                <option name="message">shop.add.name.already_exist</option>
+                <option name="groups">
+                    <value>shop_add</value>
+                    <value>shop_update</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="latitude">
+            <constraint name="NotBlank">
+                <option name="message">shop.add.latitude.not_blank</option>
+                <option name="groups">
+                    <value>shop_add</value>
+                    <value>shop_update</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="longitude">
+            <constraint name="NotBlank">
+                <option name="message">shop.add.longitude.not_blank</option>
+                <option name="groups">
+                    <value>shop_add</value>
+                    <value>shop_update</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="address">
+            <constraint name="NotBlank">
+                <option name="message">shop.add.address.not_blank</option>
+                <option name="groups">
+                    <value>shop_add</value>
+                    <value>shop_update</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+</constraint-mapping>

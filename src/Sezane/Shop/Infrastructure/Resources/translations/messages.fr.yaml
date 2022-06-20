@@ -1,0 +1,9 @@
+shop:
+  add:
+    message_error: "Une erreur s'est produite durant l'ajout de la boutique"
+    success: "L'ajout de la boutique a été réalisé avec succès"
+    name:
+      not_blank: "Le nom est obligatoire"
+  search:
+    message:
+      result_empty: Il n'y a pas de résultats

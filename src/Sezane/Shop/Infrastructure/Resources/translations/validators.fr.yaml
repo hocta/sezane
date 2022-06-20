@@ -1,0 +1,4 @@
+shop:
+  add:
+    name:
+      already_exist: "Ce nom '{{ string }}' exist déjà"
