@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Sezane\Product\Infrastructure\Persistence\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\PersistentCollection;
 use Sezane\Shop\Infrastructure\Persistence\Entity\Shop;
 
 class Product
@@ -13,11 +15,15 @@ class Product
     private string $name;
     private ?string $imageUrl = null;
 
-    private ArrayCollection $productShop;
+    private PersistentCollection $productShops;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->productShop = new ArrayCollection();
+        $this->productShops = new PersistentCollection(
+            $entityManager,
+            $entityManager->getClassMetadata(ProductShop::class),
+            new ArrayCollection()
+        );
     }
 
     public function setId(int $id): self
@@ -53,21 +59,21 @@ class Product
         return $this;
     }
 
-    public function getProductShop(): ArrayCollection
+    public function getProductShops(): PersistentCollection
     {
-        return $this->productShop;
+        return $this->productShops;
     }
 
-    public function addProductShop(Shop $shop): self
+    public function addProductShop(ProductShop $productShop): self
     {
-        $this->productShop->add($shop);
+        $this->productShops->add($productShop);
         return $this;
     }
 
-    public function removeProductShop(Shop $shop): void
+    public function removeProductShops(ProductShop $productShop): void
     {
-        if($this->productShop->contains($shop)) {
-            $this->productShop->removeElement($shop);
+        if($this->productShops->contains($productShop)) {
+            $this->productShops->removeElement($productShop);
         }
     }
 }

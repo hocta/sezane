@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @copyright Photo-Me France. All rights reserved.
- */
-
 declare(strict_types=1);
 
 namespace Sezane\Product\Infrastructure\Persistence\Repository;
@@ -27,15 +23,13 @@ class ProductRepository extends ServiceEntityRepository implements ProductReposi
     {
         $limit = 2;
         $result = parent::findBy(
-            [
-                'shop' => $shopId
-            ],
+            [],
             [],
             $limit,
             ($limit * ($page - 1))
         );
 
-        dd($result);
+        dd($result[0]->getProductShops());
     }
 
     public function save(ProductModel $product): void

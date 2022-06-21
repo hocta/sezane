@@ -28,6 +28,9 @@
             </options>
         </field>
 
+        <!-- ASSOCIATIONS -->
+        <one-to-many field="productShops" target-entity="ProductShop" mapped-by="productShop"/>
+
     </entity>
 
 </doctrine-mapping>
