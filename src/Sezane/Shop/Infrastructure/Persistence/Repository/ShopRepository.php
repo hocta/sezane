@@ -11,9 +11,6 @@ namespace Sezane\Shop\Infrastructure\Persistence\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\Query\Expr\Join;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Sezane\Shop\Domain\Model\Shop;
 use Sezane\Shop\Infrastructure\Persistence\Entity\Shop as ShopEntity;
@@ -69,34 +66,51 @@ class ShopRepository extends ServiceEntityRepository implements ShopRepositoryIn
 
     public function search(array $criteria, int $page = 1, array $orderBy = []): array
     {
+        if(empty($criteria['name'])) return [];
+
         $pageSize = 2;
         $firstResult = ($page - 1) * $pageSize;
-
-        $sqlDistance = '
-            ROUND((6353 * 2 * asin(sqrt( power(SIN((s.latitude - :latitude) * pi()/180 / 2), 2) + cos(s.latitude * pi()/180) * 
-            cos(:latitude * pi()/180) * power(sin((s.longitude - :longitude) * pi()/180 / 2), 2) ))),2) as distance
-        ';
 
         $qb = $this
             ->createQueryBuilder('s')
             ->leftJoin('s.manager', 'm')
             ->select('s.name, s.latitude, s.longitude, s.address')
-            ->addSelect($sqlDistance)
             ->addSelect('m.id as manager_id, m.firstName')
             ->addCriteria(
                 Criteria::create()->where(
                     Criteria::expr()->contains('name', $criteria['name'])
                 )
             )
-            ->having('distance <= :distance')
-            ->setParameter('latitude', $criteria['latitude'])
-            ->setParameter('longitude', $criteria['longitude'])
-            ->setParameter('distance', $criteria['distance'])
             ->setFirstResult($firstResult)
             ->setMaxResults($pageSize);
 
+        if (
+            !empty($criteria['latitude']) &&
+            !empty($criteria['longitude']) &&
+            !empty($criteria['distance'])
+        ) {
+            $sqlDistance = '
+                ROUND((6353 * 2 * asin(sqrt( power(SIN((s.latitude - :latitude) * pi()/180 / 2), 2) + cos(s.latitude * pi()/180) * 
+                cos(:latitude * pi()/180) * power(sin((s.longitude - :longitude) * pi()/180 / 2), 2) ))),2) as distance
+            ';
+
+            $qb
+                ->addSelect($sqlDistance)
+                ->having('distance <= :distance')
+                ->setParameter('latitude', $criteria['latitude'])
+                ->setParameter('longitude', $criteria['longitude'])
+                ->setParameter('distance', $criteria['distance']);
+
+            if ($orderBy) {
+                foreach ($orderBy as $key => $value) {
+                    if($key == 'distance') $qb->addOrderBy($key, $value);
+                }
+            }
+        }
+
         if ($orderBy) {
             foreach ($orderBy as $key => $value) {
+                if($key == 'distance') continue;
                 $qb->addOrderBy($key, $value);
             }
         }

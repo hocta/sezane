@@ -6,11 +6,11 @@
 
 declare(strict_types=1);
 
-namespace Sezane\Product\Infrastructure\Controller\Product;
+namespace Sezane\Product\Infrastructure\Controller\Api\Product;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class ListProduct extends AbstractController
+class Add extends AbstractController
 {
 
 }

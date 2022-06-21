@@ -1,13 +1,30 @@
+# --- Shop ---
 shop_add:
-  path: /api/shop/add
+  path: /api/v1/shop/add
   controller: Sezane\Shop\Infrastructure\Controller\Api\Shop\Add
   methods: POST
 
 shop_search:
-  path: /api/shop/search/{page}
+  path: /api/v1/shop/search/{page}
   controller: Sezane\Shop\Infrastructure\Controller\Api\Shop\Search
   methods: POST
   defaults:
     page: 1
   requirements:
     page: '\d+'
+
+# --- Product ---
+product_add:
+  path: /api/v1/product/add
+  controller: Sezane\Product\Infrastructure\Controller\Api\Product\Add
+  methods: POST
+
+product_list:
+  path: /api/v1/product/list/{page}/{shopId?}
+  controller: Sezane\Product\Infrastructure\Controller\Api\Product\Get
+  methods: GET
+  defaults:
+    page: 1
+  requirements:
+    page: '\d+'
+    shopId: '\d+'

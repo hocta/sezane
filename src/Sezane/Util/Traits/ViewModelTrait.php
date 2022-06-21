@@ -12,17 +12,17 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 trait ViewModelTrait
 {
-    private ?string $globalErrorMessage = null;
+    private ?string $globalMessage = null;
     private ?ConstraintViolationListInterface $constraintErrors = null;
 
-    public function getGlobalErrorMessage(): ?string
+    public function getGlobalMessage(): ?string
     {
-        return $this->globalErrorMessage;
+        return $this->globalMessage;
     }
 
-    public function setGlobalErrorMessage(?string $globalErrorMessage): self
+    public function setGlobalMessage(?string $globalMessage): self
     {
-        $this->globalErrorMessage = $globalErrorMessage;
+        $this->globalMessage = $globalMessage;
         return $this;
     }
 

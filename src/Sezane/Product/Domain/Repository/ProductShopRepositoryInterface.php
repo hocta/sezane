@@ -6,9 +6,8 @@
 
 declare(strict_types=1);
 
-namespace Sezane\Util\Traits;
+namespace Sezane\Product\Domain\Repository;
 
-trait FunctionsTrait
+interface ProductShopRepositoryInterface
 {
-
 }

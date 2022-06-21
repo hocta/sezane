@@ -24,13 +24,17 @@ class JsonViewRender
     public function generateView(ViewModel $viewModel): JsonResponse
     {
         $httpResponse = Response::HTTP_OK;
-        $output = [];
 
-        if ($viewModel->getGlobalErrorMessage()) {
-            $output['message'] = $this->translator->trans($viewModel->getGlobalErrorMessage());
+        if ($viewModel->getGlobalMessage()) {
+            $message = $this->translator->trans($viewModel->getGlobalMessage());
+            $result['shops'] = [];
         } else {
-            $output['shops'] = $viewModel->getShops();
+            $message = $this->translator->trans('shop.search.success');
+            $result['shops'] = $viewModel->getShops();
         }
+
+        $output['message'] = $message;
+        $output['result'] = $result;
 
         return new JsonResponse(
             $output,

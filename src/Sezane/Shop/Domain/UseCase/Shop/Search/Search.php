@@ -34,11 +34,14 @@ class Search
                 'distance' => $request->getDistance()
             ],
             $request->getPage(),
-            ['distance' => 'ASC']
+            [
+                'distance' => 'ASC',
+                's.name' => 'ASC'
+            ]
         );
 
         if(!$shops){
-            $response->setGlobalErrorMessage('shop.search.message.result_empty');
+            $response->setGlobalMessage('shop.search.message.result_empty');
         }
 
         $response->setShops($shops);

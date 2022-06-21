@@ -19,7 +19,7 @@ class JsonPresenter implements AddPresenterInterface
     {
         $viewModel = new ViewModel();
         $viewModel
-            ->setGlobalErrorMessage($response->getGlobalErrorMessage())
+            ->setGlobalMessage($response->getGlobalMessage())
             ->setErrors($response->getErrors());
         $this->viewModel = $viewModel;
     }

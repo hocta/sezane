@@ -26,9 +26,9 @@ class JsonViewRender
     {
         $httpResponse = Response::HTTP_OK;
 
-        if (null !== $viewModel->getGlobalErrorMessage()) {
+        if (null !== $viewModel->getGlobalMessage()) {
             $httpResponse = Response::HTTP_BAD_GATEWAY;
-            $output['message'] = $this->translator->trans($viewModel->getGlobalErrorMessage());
+            $message = $this->translator->trans($viewModel->getGlobalMessage());
 
             if ($viewModel->getErrors() instanceof ConstraintViolationList && $viewModel->getErrors()->count() > 0) {
                 $httpResponse = Response::HTTP_BAD_REQUEST;
@@ -38,11 +38,15 @@ class JsonViewRender
                     $validationErrorMessage = $this->translator->trans($validationError->getMessage());
                     $validationErrors[$validationError->getPropertyPath()] = $validationErrorMessage;
                 }
-                $output['errors'] = $validationErrors;
+                $result['errors'] = $validationErrors;
             }
         } else {
-            $output['message'] = $this->translator->trans('shop.add.success');
+            $message = $this->translator->trans('shop.add.message.success');
+            $result['msg'] = $this->translator->trans('shop.add.success');
         }
+
+        $output['message'] = $message;
+        $output['result'] = $result;
 
         return new JsonResponse(
             $output,

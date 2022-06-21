@@ -34,3 +34,7 @@ services:
   Sezane\Shop\Infrastructure\Controller\:
     resource: "../src/Sezane/Shop/Infrastructure/Controller"
     tags: ["controller.service_arguments"]
+
+  Sezane\Product\Infrastructure\Controller\:
+    resource: "../src/Sezane/Product/Infrastructure/Controller"
+    tags: [ "controller.service_arguments" ]

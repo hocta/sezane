@@ -28,11 +28,6 @@
             </options>
         </field>
 
-        <!-- ASSOCIATIONS -->
-        <many-to-one field="productShop" target-entity="ProductShop">
-            <join-column name="product_shop_id" referenced-column-name="id" nullable="true" />
-        </many-to-one>
-
     </entity>
 
 </doctrine-mapping>

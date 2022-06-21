@@ -38,7 +38,7 @@ class Add
         $errors = $this->validator->validate($shop, null, ['shop_add']);
 
         if ($errors->count() > 0) {
-            $response->setGlobalErrorMessage('shop.add.message_error');
+            $response->setGlobalMessage('shop.add.error');
             $response->setErrors($errors);
         } else {
             $this->shopManager->save($shop);

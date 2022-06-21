@@ -6,9 +6,9 @@
 
 declare(strict_types=1);
 
-namespace Sezane\Util\Traits;
+namespace Sezane\Product\Domain\Manager;
 
-trait FunctionsTrait
+class ProductShopManager
 {
 
 }

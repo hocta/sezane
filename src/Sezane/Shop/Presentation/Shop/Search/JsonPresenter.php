@@ -19,7 +19,7 @@ class JsonPresenter implements SearchPresenterInterface
     {
         $viewModel = new ViewModel();
         $viewModel
-            ->setGlobalErrorMessage($response->getGlobalErrorMessage())
+            ->setGlobalMessage($response->getGlobalMessage())
             ->setShops($response->getShops());
 
         $this->viewModel = $viewModel;
