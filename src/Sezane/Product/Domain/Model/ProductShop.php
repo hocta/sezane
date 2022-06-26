@@ -8,18 +8,20 @@ use Sezane\Shop\Domain\Model\Shop;
 
 class ProductShop
 {
-    private int $id;
+    public const TOTAL_RESULT = 10;
+
+    private ?int $id = null;
     private int $numberStock = 0;
 
     private Product $product;
     private Shop $shop;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(int $id): self
+    public function setId(?int $id): self
     {
         $this->id = $id;
         return $this;

@@ -42,7 +42,8 @@
         "symfony/web-link": "6.0.*",
         "symfony/yaml": "6.0.*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "zircote/swagger-php": "^4.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
@@ -89,6 +90,11 @@
         "test": "phpunit --testdox",
         "tests": "phpunit --testdox",
         "test-coverage": "XDEBUG_MODE=coverage phpunit --coverage-text src",
+        "swagger": [
+            "./vendor/bin/openapi src/Sezane -e src/Sezane/*/Test  -o ./public/swagger/docApi/swagger.yaml",
+            "yarn openapi split ./public/swagger/docApi/swagger.yaml --outDir=./public/swagger/docApi/split",
+            "rm ./public/swagger/docApi/swagger.yaml"
+        ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"

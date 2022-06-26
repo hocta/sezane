@@ -1,30 +1,36 @@
 # --- Shop ---
-shop_add:
-  path: /api/v1/shop/add
-  controller: Sezane\Shop\Infrastructure\Controller\Api\Shop\Add
-  methods: POST
+shop_save:
+  path: /api/v1/shop/save
+  controller: Sezane\Shop\Infrastructure\Controller\Api\Shop\Save
+  methods: PUT
 
 shop_search:
-  path: /api/v1/shop/search/{page}
+  path: /api/v1/shop/search
   controller: Sezane\Shop\Infrastructure\Controller\Api\Shop\Search
   methods: POST
-  defaults:
-    page: 1
-  requirements:
-    page: '\d+'
 
 # --- Product ---
-product_add:
-  path: /api/v1/product/add
-  controller: Sezane\Product\Infrastructure\Controller\Api\Product\Add
-  methods: POST
+product_save:
+  path: /api/v1/product/save
+  controller: Sezane\Product\Infrastructure\Controller\Api\Product\Save
+  methods: PUT
 
 product_list:
-  path: /api/v1/product/list/{page}/{shopId?}
-  controller: Sezane\Product\Infrastructure\Controller\Api\Product\Get
-  methods: GET
-  defaults:
-    page: 1
-  requirements:
-    page: '\d+'
-    shopId: '\d+'
+  path: /api/v1/product/list
+  controller: Sezane\Product\Infrastructure\Controller\Api\Product\ListProduct
+  methods: POST
+
+productshop_list:
+  path: /api/v1/productshop/list
+  controller: Sezane\Product\Infrastructure\Controller\Api\ProductShop\Get
+  methods: POST
+
+productshop_stock:
+  path: /api/v1/productshop/stock/get
+  controller: Sezane\Product\Infrastructure\Controller\Api\ProductShop\Stock\Get
+  methods: POST
+
+productshop_save:
+  path: /api/v1/productshop/save
+  controller: Sezane\Product\Infrastructure\Controller\Api\ProductShop\Save
+  methods: PUT

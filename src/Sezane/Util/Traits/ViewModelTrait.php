@@ -10,6 +10,7 @@ trait ViewModelTrait
 {
     private ?string $globalMessage = null;
     private ?ConstraintViolationListInterface $constraintErrors = null;
+    private ?array $customErrors = null;
 
     public function getGlobalMessage(): ?string
     {
@@ -30,6 +31,17 @@ trait ViewModelTrait
     public function setErrors(?ConstraintViolationListInterface $errors): self
     {
         $this->constraintErrors = $errors;
+        return $this;
+    }
+
+    public function getCustomErrors(): ?array
+    {
+        return $this->customErrors;
+    }
+
+    public function setCustomErrors(?array $customErrors): self
+    {
+        $this->customErrors = $customErrors;
         return $this;
     }
 }

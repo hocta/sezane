@@ -15,9 +15,9 @@ use Sezane\Shop\Domain\UseCase\Shop\Search\Search as UCSearch;
 class Search extends AbstractController
 {
     public function __construct(
-        private JsonPresenter $presenter,
+        private JsonPresenter  $presenter,
         private JsonViewRender $viewRender,
-        private UCSearch $search
+        private UCSearch       $search
     )
     {
     }
@@ -25,12 +25,29 @@ class Search extends AbstractController
     public function __invoke(Request $request): JsonResponse
     {
         $searchRequest = new SearchRequest();
+
+        $json = json_decode($request->getContent());
+        $parameters = $json->parameters ?? null;
+
+        if ($parameters) {
+            $searchRequest
+                ->setName($parameters->name)
+                ->setLatitude($parameters->latitude ?? null)
+                ->setLongitude($parameters->longitude ?? null)
+                ->setDistance($parameters->distance ?? null);
+        }
+
+        if (!empty($json->orderBy)) {
+            $orderBy = [
+                'distance' => $json->orderBy->distance ?? null,
+                'name' => $json->orderBy->name ?? null
+            ];
+        }
+
         $searchRequest
-            ->setName($request->get('name'))
-            ->setLatitude($request->get('latitude'))
-            ->setLongitude($request->get('longitude'))
-            ->setDistance($request->get('distance'))
-            ->setPage(intval($request->get('page')));
+            ->setPage($json->page ?? null)
+            ->setOrderBy($orderBy ?? [])
+            ->setLimit($json->limit ?? null);
 
         $this->search->execute($searchRequest, $this->presenter);
 

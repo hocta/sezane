@@ -5,17 +5,23 @@ declare(strict_types=1);
 namespace Sezane\Shop\Infrastructure\Persistence\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\PersistentCollection;
 
 class Manager
 {
     private int $id;
     private string $firstName;
     private string $lastName;
-    private ArrayCollection $shops;
+    private PersistentCollection $shops;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->shops = new ArrayCollection();
+        $this->shops = new PersistentCollection(
+            $entityManager,
+            $entityManager->getClassMetadata(Shop::class),
+            new ArrayCollection()
+        );
     }
 
     public function getId(): int
@@ -51,29 +57,26 @@ class Manager
         return $this;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getShops(): ArrayCollection
+    public function getShops(): PersistentCollection
     {
         return $this->shops;
     }
 
-    /**
-     * @param ArrayCollection $shops
-     */
-    public function addShop(Shop $shop): void
+    public function addShop(Shop $shop): self
     {
-        $this->shops->add($shop);
+        if(!$this->shops->contains($shop)) {
+            $this->shops->add($shop);
+        }
+
+        return $this;
     }
 
-    /**
-     * @param ArrayCollection $shops
-     */
-    public function removeShop(Shop $shop): void
+    public function removeShop(Shop $shop): self
     {
         if($this->shops->contains($shop)) {
             $this->shops->removeElement($shop);
         }
+
+        return $this;
     }
 }

@@ -9,14 +9,14 @@ use Sezane\Util\Traits\ViewModelTrait;
 class ViewModel
 {
     use ViewModelTrait;
-    private array $shops = [];
+    private ?array $shops = null;
 
-    public function getShops(): array
+    public function getShops(): ?array
     {
         return $this->shops;
     }
 
-    public function setShops(array $shops): self
+    public function setShops(?array $shops): self
     {
         $this->shops = $shops;
         return $this;

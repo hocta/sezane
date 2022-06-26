@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class Manager
 {
-    private int $id;
+    private ?int $id = null;
     private string $firstName;
     private string $lastName;
     private ArrayCollection $shops;
@@ -18,12 +18,12 @@ class Manager
         $this->shops = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(int $id): self
+    public function setId(?int $id): self
     {
         $this->id = $id;
         return $this;

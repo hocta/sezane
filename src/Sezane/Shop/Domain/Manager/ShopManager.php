@@ -15,9 +15,9 @@ class ShopManager
     {
     }
 
-    public function save(Shop $shop): void
+    public function save(Shop $shop): ?Shop
     {
-        $this->shopRepository->save($shop);
+        return $this->shopRepository->save($shop);
     }
 
     public function findOneBy(array $criteria, ?array $orderBy = null): ?Shop
@@ -25,8 +25,8 @@ class ShopManager
         return $this->shopRepository->findOneBy($criteria, $orderBy);
     }
 
-    public function search(array $criteria, int $page = 1, array $orderBy = []): array
+    public function searchByName(array $criteria, int $page = 1, array $orderBy = [], ?int $limit = null): array
     {
-        return $this->shopRepository->search($criteria, $page, $orderBy);
+        return $this->shopRepository->searchByName($criteria, $page, $orderBy, $limit);
     }
 }

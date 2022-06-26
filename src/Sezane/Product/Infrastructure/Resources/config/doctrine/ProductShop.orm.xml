@@ -23,13 +23,18 @@
         </field>
 
         <!-- ASSOCIATIONS -->
-        <many-to-one field="shop" target-entity="Sezane\Shop\Infrastructure\Persistence\Entity\Shop" >
-            <join-column name="shop_id" referenced-column-name="id" nullable="true" />
+        <many-to-one field="shop" target-entity="Sezane\Shop\Infrastructure\Persistence\Entity\Shop"
+                     inversed-by="shops">
+            <join-column name="shop_id" referenced-column-name="id" nullable="true" column-definition=""/>
         </many-to-one>
 
-        <many-to-one field="product" target-entity="Product">
+        <many-to-one field="product" target-entity="Product" inversed-by="products">
             <join-column name="product_id" referenced-column-name="id" nullable="true"/>
         </many-to-one>
+
+        <unique-constraints>
+            <unique-constraint name="product_shop_unique" columns="product_id,shop_id"/>
+        </unique-constraints>
 
     </entity>
 

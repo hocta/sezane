@@ -5,30 +5,32 @@ declare(strict_types=1);
 namespace Sezane\Product\Domain\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Sezane\Shop\Infrastructure\Persistence\Entity\Shop;
+use Sezane\Shop\Domain\Model\Shop;
 
 class Product
 {
-    private int $id;
+    public const MAX_DISPLAY_RESULT = 2;
+
+    private ?int $id = null;
     private string $name;
     private ?string $imageUrl = null;
 
-    private ArrayCollection $productShop;
+    private ArrayCollection $shops;
 
     public function __construct()
     {
-        $this->productShop = new ArrayCollection();
+        $this->shops = new ArrayCollection();
     }
 
-    public function setId(int $id): self
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): self
     {
         $this->id = $id;
         return $this;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getName(): string
@@ -53,21 +55,23 @@ class Product
         return $this;
     }
 
-    public function getProductShop(): ArrayCollection
+    public function getShops(): ArrayCollection
     {
-        return $this->productShop;
+        return $this->shops;
     }
 
-    public function addProductShop(Shop $shop): self
+    public function addShop(Shop $shop): self
     {
-        $this->productShop->add($shop);
+        if(!$this->shops->contains($shop)){
+            $this->shops->add($shop);
+        }
+
         return $this;
     }
 
-    public function removeProductShop(Shop $shop): void
+    public function removeShop(Shop $shop): self
     {
-        if($this->productShop->contains($shop)) {
-            $this->productShop->removeElement($shop);
-        }
+        $this->shops->removeElement($shop);
+        return $this;
     }
 }

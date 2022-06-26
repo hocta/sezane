@@ -22,7 +22,7 @@ class Search
     {
         $response = new SearchResponse();
 
-        $shops = $this->shopManager->search(
+        $shops = $this->shopManager->searchByName(
             [
                 'name' => $request->getName(),
                 'latitude' => $request->getLatitude(),
@@ -30,10 +30,8 @@ class Search
                 'distance' => $request->getDistance()
             ],
             $request->getPage(),
-            [
-                'distance' => 'ASC',
-                's.name' => 'ASC'
-            ]
+            $request->getOrderBy(),
+            $request->getLimit()
         );
 
         if(!$shops){

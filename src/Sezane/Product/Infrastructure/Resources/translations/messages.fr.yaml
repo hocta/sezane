@@ -1,0 +1,11 @@
+product:
+  list:
+    message:
+      empty_product: "Aucun produit trouvé"
+
+productshop:
+  add:
+    message:
+      error: "Erreur d'ajout du produit"
+      success: "Ajout du produit à la boutique avec succès"
+    error_duplicate: "Ce produit existe déjà dans cette boutique"

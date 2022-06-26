@@ -11,7 +11,7 @@ use Sezane\Shop\Infrastructure\Persistence\Entity\Shop;
 
 class Product
 {
-    private int $id;
+    private ?int $id = null;
     private string $name;
     private ?string $imageUrl = null;
 
@@ -21,20 +21,20 @@ class Product
     {
         $this->productShops = new PersistentCollection(
             $entityManager,
-            $entityManager->getClassMetadata(ProductShop::class),
+            $entityManager->getClassMetadata(Product::class),
             new ArrayCollection()
         );
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function setId(int $id): self
     {
         $this->id = $id;
         return $this;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getName(): string
@@ -64,16 +64,17 @@ class Product
         return $this->productShops;
     }
 
-    public function addProductShop(ProductShop $productShop): self
+    public function addProductShop(Shop $shop): self
     {
-        $this->productShops->add($productShop);
+        if (!$this->productShops->contains($shop)) {
+            $this->productShops->add($shop);
+        }
         return $this;
     }
 
-    public function removeProductShops(ProductShop $productShop): void
+    public function removeProductShop(Shop $shop): self
     {
-        if($this->productShops->contains($productShop)) {
-            $this->productShops->removeElement($productShop);
-        }
+        $this->productShops->removeElement($shop);
+        return $this;
     }
 }

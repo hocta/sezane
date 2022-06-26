@@ -32,7 +32,7 @@ RUN docker-php-ext-install \
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.client_host = host.docker.internal" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.client_host = host.docker.internal.test" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo 'date.timezone = "Europe/Paris"\n' > /usr/local/etc/php/conf.d/timezone.ini
 
 RUN curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
@@ -42,5 +42,15 @@ RUN curl --silent --show-error https://getcomposer.org/installer | php -- --inst
 RUN curl https://phar.phpunit.de/phpunit-7.phar -L -o phpunit.phar \
     && chmod +x phpunit.phar \
     && mv phpunit.phar /usr/local/bin/phpunit
+
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g yarn \
+    && mkdir /var/www/.yarn \
+    && mkdir /var/www/.cache \
+    && touch /var/www/.yarnrc \
+    && chown www-data:www-data /var/www/.yarn \
+    && chown www-data:www-data /var/www/.yarnrc \
+    && chown www-data:www-data /var/www/.cache
 
 WORKDIR /var/www

@@ -15,12 +15,13 @@ class ProductManager
     {
     }
 
-    public function save(Product $product): void{
-        $this->productRepository->save($product);
+    public function list(int $page, ?array $orderBy = null, ?int $limit = null): array
+    {
+        return $this->productRepository->list($page, $orderBy, $limit);
     }
 
-    public function list(?int $shopId, int $page = 1, array $orderBy = []): array
+    public function findOneBy(array $criteria, ?array $orderBy = null): ?Product
     {
-        return $this->productRepository->list($shopId, $page, $orderBy);
+        return $this->productRepository->findOneBy($criteria, $orderBy);
     }
 }

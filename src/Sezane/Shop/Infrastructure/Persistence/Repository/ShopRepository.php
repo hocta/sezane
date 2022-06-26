@@ -8,23 +8,21 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Sezane\Shop\Domain\Model\Manager;
 use Sezane\Shop\Domain\Model\Shop;
 use Sezane\Shop\Infrastructure\Persistence\Entity\Shop as ShopEntity;
 use Sezane\Shop\Domain\Repository\ShopRepositoryInterface;
-use Sezane\Util\Traits\FunctionsTrait;
 
 class ShopRepository extends ServiceEntityRepository implements ShopRepositoryInterface
 {
-    use FunctionsTrait;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ShopEntity::class);
     }
 
-    public function save(Shop $shop): void
+    public function save(Shop $shop): ?Shop
     {
-        if ($shop->getId() !== null) {
+        if ($shop->getId()) {
             $shopEntity = parent::findOneBy(['id' => $shop->getId()]);
         } else {
             $shopEntity = new ShopEntity();
@@ -38,6 +36,8 @@ class ShopRepository extends ServiceEntityRepository implements ShopRepositoryIn
 
         $this->getEntityManager()->persist($shopEntity);
         $this->getEntityManager()->flush();
+
+        return $this->convertShopEntityToModel($shopEntity);
     }
 
     public function findOneBy(array $criteria, ?array $orderBy = null): ?Shop
@@ -46,39 +46,32 @@ class ShopRepository extends ServiceEntityRepository implements ShopRepositoryIn
             $shopEntity = parent::findOneBy($criteria, $orderBy);
             if ($shopEntity === null) return null;
 
-            $shop = new Shop();
-            $shop
-                ->setName($shopEntity->getName())
-                ->setLatitude($shopEntity->getLatitude())
-                ->setLongitude($shopEntity->getLongitude())
-                ->setAddress($shopEntity->getAddress());
-
-            return $shop;
+            return $this->convertShopEntityToModel($shopEntity);
 
         } catch (\Exception $e) {
             throw new ORMException($e->getMessage());
         }
     }
 
-    public function search(array $criteria, int $page = 1, array $orderBy = []): array
+    public function searchByName(array $criteria, int $page = 1, ?array $orderBy = null, ?int $limit = null): array
     {
-        if(empty($criteria['name'])) return [];
+        if (empty($criteria['name'])) return [];
 
-        $pageSize = 2;
-        $firstResult = ($page - 1) * $pageSize;
+        $limit = $limit ?? Shop::TOTAL_RESULT;
+        $first = ($page - 1) * $limit;
 
         $qb = $this
             ->createQueryBuilder('s')
             ->leftJoin('s.manager', 'm')
-            ->select('s.name, s.latitude, s.longitude, s.address')
+            ->select('s.id, s.name, s.latitude, s.longitude, s.address')
             ->addSelect('m.id as manager_id, m.firstName')
             ->addCriteria(
                 Criteria::create()->where(
                     Criteria::expr()->contains('name', $criteria['name'])
                 )
             )
-            ->setFirstResult($firstResult)
-            ->setMaxResults($pageSize);
+            ->setFirstResult($first)
+            ->setMaxResults($limit);
 
         if (
             !empty($criteria['latitude']) &&
@@ -99,18 +92,43 @@ class ShopRepository extends ServiceEntityRepository implements ShopRepositoryIn
 
             if ($orderBy) {
                 foreach ($orderBy as $key => $value) {
-                    if($key == 'distance') $qb->addOrderBy($key, $value);
+                    if($value == null) continue;
+                    if ($key == 'distance') $qb->addOrderBy($key, $value);
                 }
             }
         }
 
         if ($orderBy) {
             foreach ($orderBy as $key => $value) {
-                if($key == 'distance') continue;
-                $qb->addOrderBy($key, $value);
+                if($value == null) continue;
+                if ($key == 'distance') continue;
+                $qb->addOrderBy('s.'.$key, $value);
             }
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    private function convertShopEntityToModel(ShopEntity $shopEntity): Shop
+    {
+        $manager = new Manager();
+
+        if ($shopEntity->getManager() !== null) {
+            $manager
+                ->setId($shopEntity->getManager()->getId())
+                ->setFirstName($shopEntity->getManager()->getFirstName())
+                ->setLastName($shopEntity->getManager()->getLastName());
+        }
+
+        $shop = new Shop();
+        $shop
+            ->setId($shopEntity->getId())
+            ->setName($shopEntity->getName())
+            ->setLatitude($shopEntity->getLatitude())
+            ->setLongitude($shopEntity->getLongitude())
+            ->setAddress($shopEntity->getAddress())
+            ->setManager($manager);
+
+        return $shop;
     }
 }

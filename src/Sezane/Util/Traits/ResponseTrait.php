@@ -10,6 +10,7 @@ trait ResponseTrait
 {
     private ?string $globalMessage = null;
     private ?ConstraintViolationListInterface $errorsContraint = null;
+    private ?array $customErrors = null;
 
     public function getGlobalMessage(): ?string
     {
@@ -30,6 +31,22 @@ trait ResponseTrait
     public function setErrors(?ConstraintViolationListInterface $errors): self
     {
         $this->errorsContraint = $errors;
+        return $this;
+    }
+
+    public function getCustomErrors(): ?array
+    {
+        return $this->customErrors;
+    }
+
+    public function addCustomErrors(string $error): self
+    {
+        $this->customErrors = $this->customErrors ?? [];
+
+        if (!in_array($error, $this->customErrors)) {
+            array_push($this->customErrors, $error);
+        }
+
         return $this;
     }
 }

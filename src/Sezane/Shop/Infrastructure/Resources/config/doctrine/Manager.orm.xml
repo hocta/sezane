@@ -29,7 +29,7 @@
         </field>
 
         <!-- ASSOCIATIONS -->
-        <one-to-many field="shops" target-entity="Shop" mapped-by="shop"/>
+        <one-to-many field="shops" target-entity="Shop" mapped-by="manager"/>
 
     </entity>
 

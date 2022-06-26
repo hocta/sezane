@@ -8,13 +8,13 @@ use Sezane\Shop\Infrastructure\Persistence\Entity\Shop;
 
 class ProductShop
 {
-    private int $id;
+    private ?int $id = null;
     private int $numberStock = 0;
 
     private Product $product;
     private Shop $shop;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

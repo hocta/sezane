@@ -1,5 +1,6 @@
 .idea/
 .vscode/
+/node_modules
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -32,3 +33,8 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+###> swagger_ui ###
+/public/swagger/docApi/*
+!.gitkeep
+###< swager_ui ###

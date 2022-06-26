@@ -4,14 +4,25 @@ declare(strict_types=1);
 
 namespace Sezane\Shop\Domain\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Sezane\Product\Infrastructure\Persistence\Entity\Product;
+
 class Shop
 {
+    public const TOTAL_RESULT = 10;
+
     private ?int $id = null;
     private string $name;
     private float $latitude;
     private float $longitude;
     private string $address;
     private ?Manager $manager = null;
+    private ArrayCollection $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -68,7 +79,7 @@ class Shop
         return $this;
     }
 
-    public function getManager(): Manager
+    public function getManager(): ?Manager
     {
         return $this->manager;
     }
@@ -76,6 +87,26 @@ class Shop
     public function setManager(Manager $manager): self
     {
         $this->manager = $manager;
+        return $this;
+    }
+
+    public function getProducts(): ArrayCollection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        $this->products->removeElement($product);
         return $this;
     }
 }

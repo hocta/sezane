@@ -32,7 +32,7 @@
         </field>
 
         <!-- ASSOCIATIONS -->
-        <many-to-one field="manager" target-entity="Manager">
+        <many-to-one field="manager" target-entity="Manager" inversed-by="shops">
             <join-column name="manager_id" referenced-column-name="id"/>
         </many-to-one>
 

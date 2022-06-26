@@ -6,13 +6,15 @@ namespace Sezane\Shop\Domain\UseCase\Shop\Search;
 
 class SearchRequest
 {
-    private string $name;
+    private ?string $name = null;
     private ?float $latitude = null;
     private ?float $longitude = null;
     private ?int $distance = null;
-    private int $page;
+    private ?int $page = null;
+    private ?array $orderBy = null;
+    private ?int $limit = null;
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -28,7 +30,7 @@ class SearchRequest
         return $this->latitude;
     }
 
-    public function setLatitude(?string $latitude): self
+    public function setLatitude(?float $latitude): self
     {
         $this->latitude = floatval($latitude);
         return $this;
@@ -39,7 +41,7 @@ class SearchRequest
         return $this->longitude;
     }
 
-    public function setLongitude(?string $longitude): self
+    public function setLongitude(?float $longitude): self
     {
         $this->longitude = floatval($longitude);
         return $this;
@@ -50,20 +52,42 @@ class SearchRequest
         return $this->distance;
     }
 
-    public function setDistance(?string $distance): self
+    public function setDistance(?int $distance): self
     {
-        $this->distance = intval($distance);
+        $this->distance = $distance;
         return $this;
     }
 
-    public function getPage(): int
+    public function getPage(): ?int
     {
         return $this->page;
     }
 
-    public function setPage(int $page): self
+    public function setPage(?int $page): self
     {
         $this->page = $page;
+        return $this;
+    }
+
+    public function getOrderBy(): ?array
+    {
+        return $this->orderBy;
+    }
+
+    public function setOrderBy(?array $orderBy): self
+    {
+        $this->orderBy = $orderBy;
+        return $this;
+    }
+
+    public function getLimit(): ?int
+    {
+        return $this->limit;
+    }
+
+    public function setLimit(?int $limit): self
+    {
+        $this->limit = $limit;
         return $this;
     }
 }

@@ -8,7 +8,9 @@ use Sezane\Shop\Domain\Model\Shop;
 
 interface ShopRepositoryInterface
 {
-    public function save(Shop $shop): void;
+    public function save(Shop $shop): ?Shop;
+
     public function findOneBy(array $criteria, ?array $orderBy = null): ?Shop;
-    public function search(array $criteria,  int $page = 1, array $orderBy = []): array;
+
+    public function searchByName(array $criteria, int $page = 1, array $orderBy = [], ?int $limit = null): array;
 }
