@@ -17,16 +17,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get upgrade -y  && apt-get clean
 
 RUN docker-php-ext-install \
-    bcmath \
-    gd \
-    intl \
-    mbstring \
-    opcache \
-    pdo_mysql \
-    mysqli \
-    xsl \
-    zip \
-    sockets
+    pdo_mysql
 
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug \
