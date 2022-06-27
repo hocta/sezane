@@ -40,7 +40,7 @@ class JsonViewRender
                 ];
             }
 
-            $result['products'] = $resultProducts ?? [];
+            $result['products'] = $resultProducts;
         }
 
         $output['result'] = $result;

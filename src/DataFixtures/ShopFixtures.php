@@ -6,10 +6,13 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Faker\Generator;
 use Sezane\Shop\Infrastructure\Persistence\Entity\Shop;
 
 class ShopFixtures extends Fixture
 {
+    private Generator $faker;
+
     public function __construct()
     {
         $this->faker = Factory::create('fr_FR');

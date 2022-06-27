@@ -26,6 +26,8 @@ class ListProduct extends AbstractController
     {
         $json = json_decode($request->getContent());
 
+        $orderBy = null;
+
         if (!empty($json->orderBy)) {
             $orderBy = [
                 'name' => $json->orderBy->name ?? null
