@@ -8,6 +8,7 @@
 /.env.*.local
 /var/
 /vendor/
+/mariadb_test
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
