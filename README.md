@@ -26,6 +26,12 @@ cp .env.local.dist .env.local
 composer install
 yarn install
 
+# Database
+php bin/console doctrine:schema:update --force
+
+# Load Fixtures
+php bin/console doctrine:fixtures:load
+
 #génération doc API
 composer swagger
 ````

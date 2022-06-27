@@ -17,6 +17,7 @@ class JsonPresenter implements SavePresenterInterface
         $viewModel
             ->setShop($response->getShop())
             ->setGlobalMessage($response->getGlobalMessage())
+            ->setCustomErrors($response->getCustomErrors())
             ->setErrors($response->getErrors());
 
         $this->viewModel = $viewModel;

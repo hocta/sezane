@@ -56,7 +56,11 @@ class Save
             }
 
             $saveShop = $this->shopManager->save($shop);
-            $response->setShop($saveShop);
+            if ($saveShop === null) {
+                $response->addCustomErrors('shop.save.add.message.error');
+            } else {
+                $response->setShop($saveShop);
+            }
         }
 
         $presenter->present($response);

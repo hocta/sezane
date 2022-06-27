@@ -17,7 +17,7 @@ class ShopRepository extends ServiceEntityRepository implements ShopRepositoryIn
 {
     public function __construct(
         private ManagerRepository $managerRepository,
-        ManagerRegistry $registry
+        ManagerRegistry           $registry
     )
     {
         parent::__construct($registry, ShopEntity::class);
@@ -27,6 +27,7 @@ class ShopRepository extends ServiceEntityRepository implements ShopRepositoryIn
     {
         if ($shop->getId()) {
             $shopEntity = parent::findOneBy(['id' => $shop->getId()]);
+            if ($shopEntity === null) return null;
         } else {
             $shopEntity = new ShopEntity();
         }
@@ -64,7 +65,9 @@ class ShopRepository extends ServiceEntityRepository implements ShopRepositoryIn
 
     public function searchByName(array $criteria, int $page = 1, ?array $orderBy = null, ?int $limit = null): array
     {
-        if (empty($criteria['name'])) return [];
+        $contains = Criteria::create()->where(
+            Criteria::expr()->contains('name', $criteria['name'])
+        );
 
         $limit = $limit ?? Shop::TOTAL_RESULT;
         $first = ($page - 1) * $limit;
@@ -74,13 +77,12 @@ class ShopRepository extends ServiceEntityRepository implements ShopRepositoryIn
             ->leftJoin('s.manager', 'm')
             ->select('s.id, s.name, s.latitude, s.longitude, s.address')
             ->addSelect('m.id as manager_id, m.firstName')
-            ->addCriteria(
-                Criteria::create()->where(
-                    Criteria::expr()->contains('name', $criteria['name'])
-                )
-            )
             ->setFirstResult($first)
             ->setMaxResults($limit);
+
+        if (!empty($criteria['name'])) {
+            $qb->addCriteria($contains);
+        }
 
         if (
             !empty($criteria['latitude']) &&
@@ -120,7 +122,13 @@ class ShopRepository extends ServiceEntityRepository implements ShopRepositoryIn
 
     public function searchByIds(array $shopsId): array
     {
-        return parent::findBy(['id' => $shopsId]);
+        if ($shopsId) {
+            return parent::findBy(['id' => $shopsId]);
+        } else {
+            return parent::findAll();
+        }
+
+
     }
 
     private function convertShopEntityToModel(ShopEntity $shopEntity): Shop

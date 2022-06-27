@@ -4,29 +4,39 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 use Faker\Generator;
-use Faker\Provider\fr_FR\Person;
 use Sezane\Shop\Infrastructure\Persistence\Entity\Manager;
 
 class ManagerFixtures extends Fixture
 {
+    private Generator $faker;
+
     public function __construct(private EntityManagerInterface $entityManager)
     {
+        $this->faker = Factory::create('fr_FR');
     }
 
     public function load(ObjectManager $objectManager): void
     {
-        $faker = new Generator();
-        $faker->addProvider(new Person($faker));
+        $managers = [];
 
         for ($i = 0; $i < 20; $i++) {
             $manager = new Manager($this->entityManager);
             $manager
-                ->setFirstName($faker->firstName())
-                ->setLastName($faker->lastName());
+                ->setId(($i+1))
+                ->setFirstName($this->faker->firstName())
+                ->setLastName($this->faker->lastName());
 
             $objectManager->persist($manager);
+
+            $this->addReference('manager'.($i+1), $manager);
+
+            // Reset ID
+            $metadata = $objectManager->getClassMetaData(get_class($manager));
+            $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
         }
 
         $objectManager->flush();

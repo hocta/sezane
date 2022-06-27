@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Sezane\Product\Infrastructure\Persistence\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 use Sezane\Product\Domain\Model\ProductShop;
@@ -108,11 +107,8 @@ class ProductShopRepository extends ServiceEntityRepository implements ProductSh
             ->leftJoin('ps.shop', 's')
             ->leftJoin('ps.product', 'p')
             ->where('ps.product = :productId')
-            ->addCriteria(
-                Criteria::create()->where(
-                    Criteria::expr()->in('s.id', $shopsId)
-                )
-            )
+            ->andWhere('s.id IN (:shopsId)')
+            ->setParameter('shopsId', $shopsId)
             ->setParameter('productId', $productId);
 
         return $qb->getQuery()->execute();
