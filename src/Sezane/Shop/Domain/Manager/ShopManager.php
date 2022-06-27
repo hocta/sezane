@@ -29,4 +29,9 @@ class ShopManager
     {
         return $this->shopRepository->searchByName($criteria, $page, $orderBy, $limit);
     }
+
+    public function searchByIds(array $shopsId): array
+    {
+        return $this->shopRepository->searchByIds($shopsId);
+    }
 }

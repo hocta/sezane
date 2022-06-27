@@ -36,12 +36,12 @@ use OpenApi\Attributes as OAT;
                     'result' => [
                         'code' => 'OK',
                         'shop' => [
-                            "id" => 99,
-                            "name" => "Boutique test",
-                            "latitude" => 48.123,
-                            "longitude" => 2.123,
-                            "address" => "1 rue test",
-                            "manager" => null
+                            'id' => 99,
+                            'name' => 'Boutique test',
+                            'latitude' => 48.123,
+                            'longitude' => 2.123,
+                            'address' => '1 rue test',
+                            'manager' => null
                         ]
                     ]
                 ]

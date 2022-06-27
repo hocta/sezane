@@ -15,7 +15,7 @@ class JsonViewRender
         $httpResponse = Response::HTTP_OK;
         $result['code'] = 'OK';
 
-        if ($viewModel->getProducts() === null) {
+        if (!$viewModel->getProducts()) {
             $result['products'] = [];
         } else {
 

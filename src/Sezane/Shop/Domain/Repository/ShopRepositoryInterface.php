@@ -13,4 +13,6 @@ interface ShopRepositoryInterface
     public function findOneBy(array $criteria, ?array $orderBy = null): ?Shop;
 
     public function searchByName(array $criteria, int $page = 1, array $orderBy = [], ?int $limit = null): array;
+
+    public function searchByIds(array $shopsId): array;
 }

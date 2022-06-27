@@ -15,7 +15,10 @@ use Sezane\Shop\Domain\Repository\ShopRepositoryInterface;
 
 class ShopRepository extends ServiceEntityRepository implements ShopRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        private ManagerRepository $managerRepository,
+        ManagerRegistry $registry
+    )
     {
         parent::__construct($registry, ShopEntity::class);
     }
@@ -33,6 +36,12 @@ class ShopRepository extends ServiceEntityRepository implements ShopRepositoryIn
             ->setLatitude($shop->getLatitude())
             ->setLongitude($shop->getLongitude())
             ->setAddress($shop->getAddress());
+
+        if ($shop->getManager()) {
+            $shopEntity->setManager(
+                $this->managerRepository->find($shop->getManager()->getId())
+            );
+        }
 
         $this->getEntityManager()->persist($shopEntity);
         $this->getEntityManager()->flush();
@@ -92,7 +101,7 @@ class ShopRepository extends ServiceEntityRepository implements ShopRepositoryIn
 
             if ($orderBy) {
                 foreach ($orderBy as $key => $value) {
-                    if($value == null) continue;
+                    if ($value == null) continue;
                     if ($key == 'distance') $qb->addOrderBy($key, $value);
                 }
             }
@@ -100,13 +109,18 @@ class ShopRepository extends ServiceEntityRepository implements ShopRepositoryIn
 
         if ($orderBy) {
             foreach ($orderBy as $key => $value) {
-                if($value == null) continue;
+                if ($value == null) continue;
                 if ($key == 'distance') continue;
-                $qb->addOrderBy('s.'.$key, $value);
+                $qb->addOrderBy('s.' . $key, $value);
             }
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function searchByIds(array $shopsId): array
+    {
+        return parent::findBy(['id' => $shopsId]);
     }
 
     private function convertShopEntityToModel(ShopEntity $shopEntity): Shop

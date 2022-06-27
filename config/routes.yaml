@@ -9,6 +9,12 @@ shop_search:
   controller: Sezane\Shop\Infrastructure\Controller\Api\Shop\Search
   methods: POST
 
+# --- Manager ---
+manager_save:
+  path: /api/v1/manager/save
+  controller: Sezane\Shop\Infrastructure\Controller\Api\Manager\Save
+  methods: PUT
+
 # --- Product ---
 product_save:
   path: /api/v1/product/save
@@ -20,6 +26,7 @@ product_list:
   controller: Sezane\Product\Infrastructure\Controller\Api\Product\ListProduct
   methods: POST
 
+# --- Product Shop ---
 productshop_list:
   path: /api/v1/productshop/list
   controller: Sezane\Product\Infrastructure\Controller\Api\ProductShop\Get

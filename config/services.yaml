@@ -7,9 +7,6 @@ parameters:
   locale: fr
   app_locales: fr
 
-imports:
-  - { resource: services/ }
-
 services:
   # default configuration for services in *this* file
   _defaults:
