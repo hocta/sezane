@@ -5,21 +5,25 @@ declare(strict_types=1);
 namespace Sezane\Product\Infrastructure\ViewRender\ProductShop\Get;
 
 use Sezane\Product\Presentation\ProductShop\Get\ViewModel;
+use Sezane\Util\Traits\JsonViewRenderTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class JsonViewRender
 {
+    use JsonViewRenderTrait;
+
     public function generateView(ViewModel $viewModel): JsonResponse
     {
         $httpResponse = Response::HTTP_OK;
-        $result['code'] = 'OK';
+        $result['code'] = $this->codeSuccess();
 
         if (!$viewModel->getProducts()) {
             $result['products'] = [];
         } else {
 
             $resultProducts = null;
+
             foreach ($viewModel->getProducts() as $productShop) {
                 $resultProducts[] = [
                     'id' => $productShop->getProduct()->getId(),

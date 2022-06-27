@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Sezane\Product\Infrastructure\ViewRender\ProductShop\Save;
 
 use Sezane\Product\Presentation\ProductShop\Save\ViewModel;
+use Sezane\Util\Traits\JsonViewRenderTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class JsonViewRender
 {
+    use JsonViewRenderTrait;
+
     public function __construct(private TranslatorInterface $translator)
     {
     }
@@ -21,14 +24,17 @@ class JsonViewRender
         $message = $this->translator->trans($viewModel->getGlobalMessage());
 
         if ($viewModel->getCustomErrors()) {
+
             $httpResponse = Response::HTTP_BAD_REQUEST;
-            $result['code'] = 'KO';
+            $result['code'] = $this->codeError();
+
             foreach ($viewModel->getCustomErrors() as $error) {
                 $result['errors'][] = $this->translator->trans($error);
             }
+
         } else {
             $result = [
-                'code' => 'OK',
+                'code' => $this->codeSuccess(),
                 'productShopId' => $viewModel->getProductShopId(),
                 'quantity' => $viewModel->getQuantity(),
                 'product' => [

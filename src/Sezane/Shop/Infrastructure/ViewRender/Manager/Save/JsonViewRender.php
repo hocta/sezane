@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Sezane\Shop\Infrastructure\ViewRender\Manager\Save;
 
 use Sezane\Shop\Presentation\Manager\Save\ViewModel;
+use Sezane\Util\Traits\JsonViewRenderTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class JsonViewRender
 {
+    use JsonViewRenderTrait;
+
     public function __construct(private TranslatorInterface $translator)
     {
     }
@@ -22,7 +25,7 @@ class JsonViewRender
 
         if ($viewModel->getManager()) {
             $result = [
-                'code' => 'OK',
+                'code' => $this->codeSuccess(),
                 'manager' => [
                     'id' => $viewModel->getManager()->getId(),
                     'firstName' => $viewModel->getManager()->getFirstName(),
@@ -40,7 +43,7 @@ class JsonViewRender
                 ];
             }
         } else {
-            $result['code'] = 'KO';
+            $result['code'] = $this->codeError();
 
             if ($viewModel->getCustomErrors()) {
                 foreach ($viewModel->getCustomErrors() as $error) {
