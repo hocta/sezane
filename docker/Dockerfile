@@ -26,8 +26,7 @@ RUN docker-php-ext-install \
     mysqli \
     xsl \
     zip \
-    sockets \
-    soap
+    sockets
 
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug \

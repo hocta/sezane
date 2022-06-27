@@ -6,9 +6,9 @@ twig:
   # ...
   paths:
     # @SezaneShop
-    '%kernel.project_dir%/src/Sezane/Shop/Infrastructure/templates': 'Shop'
+    #'%kernel.project_dir%/src/Sezane/Shop/Infrastructure/templates': 'Shop'
     # @SezaneProduct
-    '%kernel.project_dir%/src/Sezane/Product/Infrastructure/templates': 'Product'
+    #'%kernel.project_dir%/src/Sezane/Product/Infrastructure/templates': 'Product'
 
 when@test:
   twig:
