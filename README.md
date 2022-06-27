@@ -3,11 +3,18 @@
 ## Documentation
 Ceci est une boutique écrite en Symfony 6 pour un test technique
 
-# Installation Docker
-Se place à la racine du projet
+# Installation AUTO
+Se placer à la racine du projet
 ````shell
-docker-compose build
-docker-compose up -d
+./start.sh
+````
+
+(Si vous avez lancé ".start.sh", les commandes ci-dessous ne sont pas nécessaire)
+
+# Installation Docker
+Se placer à la racine du projet
+````shell
+docker-compose up --build -d --remove-orphans
 ````
 
 Se connecter en BASH sur le Docker, identifier le container "php-8.1" avec la commande "docker ps"
