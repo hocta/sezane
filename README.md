@@ -19,6 +19,9 @@ docker ps
 #connexion au Docker
 docker exec -it [ID container] bash
 
+#Env
+cp .env.local.dist .env.local
+
 #puis lancer :
 composer install
 yarn install
