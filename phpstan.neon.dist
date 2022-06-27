@@ -1,7 +1,7 @@
 includes:
     - vendor/phpstan/phpstan-symfony/extension.neon
 parameters:
-    level: 5 #  you can currently choose from 9 levels (0 is the loosest and 8 is the strictest).
+    level: 6 #  you can currently choose from 9 levels (0 is the loosest and 8 is the strictest).
     # Often I use the level 5 because the level 6 checks that every method returns type.
     # As Symfony code generator commands does not fill those return types, it's quite inconvenient to set a level greater than 5.
     # Feel free to use the one you prefer. You could even set it to 0 to start slowly
@@ -20,5 +20,6 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
+        - '#::setIdGeneratorType#'
         - '#no value type specified in iterable type array#'
         - '#no value type specified in iterable type iterable#'
