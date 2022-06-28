@@ -49,16 +49,19 @@ class Save
             $response->setGlobalMessage('shop.add.error');
             $response->setErrors($errors);
         } else {
-            if ($shop->getId()) {
-                $response->setGlobalMessage('shop.save.update.message.success');
-            } else {
-                $response->setGlobalMessage('shop.save.add.message.success');
-            }
 
             $saveShop = $this->shopManager->save($shop);
+
             if ($saveShop === null) {
-                $response->addCustomErrors('shop.save.add.message.error');
+                $response->setGlobalMessage('shop.save.add.message.error');
+                $response->addCustomErrors('shop.save.add.error');
             } else {
+                if ($shop->getId() == $saveShop->getId()) {
+                    $response->setGlobalMessage('shop.save.update.message.success');
+                } else {
+                    $response->setGlobalMessage('shop.save.add.message.success');
+                }
+
                 $response->setShop($saveShop);
             }
         }
